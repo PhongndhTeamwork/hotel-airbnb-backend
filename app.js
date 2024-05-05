@@ -3,9 +3,11 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 
+import { routes as authRoutes } from "./routes/auth.js";
+
+
 dotenv.config();
 
-//Routes
 
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
@@ -14,5 +16,7 @@ app.use(
       credentials: true,
    })
 );
+
+app.use(authRoutes);
 
 app.listen(process.env.PORT);
