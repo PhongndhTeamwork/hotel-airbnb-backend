@@ -80,7 +80,10 @@ export class Hotel {
         res.json("Deleted!");
       })
       .catch((err) => {
+        console.log(err);
         res.status(400).json("Error!");
       });
   }
+
+  //!GET HOTEL
 }
