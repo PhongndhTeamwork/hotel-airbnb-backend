@@ -1,5 +1,9 @@
 import database from "../utils/database.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export class User {
   constructor(name, dob, email, gender, phone_number, role) {
@@ -57,9 +61,15 @@ export class User {
             .from("users")
             .where("phone_number", "=", this.phone_number)
             .then((user) => {
-              res.json(user[0]);
+              const token = jwt.sign(user[0], process.env.JWT_KEY, {
+                expiresIn: "2d",
+              });
+              res.json({ token: token, ...user[0] });
             })
-            .catch((err) => res.status(400).json("unable to get user"));
+            .catch((err) => {
+              console.log(err);
+              res.status(400).json("unable to get user");
+            });
         } else {
           res.status(400).json("wrong credentials");
         }
