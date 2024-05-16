@@ -1,4 +1,5 @@
 import database from "../utils/database.js";
+import { Pagination } from "./pagination.js";
 
 export class Hotel {
   constructor(name, address, price, star, description, service, image) {
@@ -32,6 +33,27 @@ export class Hotel {
       .catch((err) => {
         console.log(err);
         res.status(400).json("Error!");
+      });
+  }
+
+  //! GET HOTEL
+  static getHotel(res, hotelier_id, pageSize, pageNumber) {
+    database("hotel")
+      .where("hotelier_id", "=", hotelier_id)
+      .orderBy("id")
+      .select("*")
+      .then((allHotels) => {
+        const startIndex = (pageNumber - 1) * pageSize;
+        const endIndex = startIndex + pageSize;
+        const hotels = allHotels.slice(startIndex, endIndex);
+        const pageTotal = Math.ceil(allHotels.length / pageSize);
+        res
+          .status(200)
+          .json(new Pagination(pageSize, pageNumber, pageTotal, hotels));
+      })
+      .catch((err) => {
+        console.log(err);
+        res.json("Error");
       });
   }
 
@@ -84,6 +106,4 @@ export class Hotel {
         res.status(400).json("Error!");
       });
   }
-
-  //!GET HOTEL
 }
