@@ -106,4 +106,61 @@ export class Hotel {
         res.status(400).json("Error!");
       });
   }
+
+  //! GET HOTEL AS CUSTOMER
+  static getHotelAsCustomer(
+    res,
+    stayingDate,
+    leavingDate,
+    roomType,
+    hotelName,
+    hotelAddress,
+    roomNumber,
+    pageSize,
+    pageNumber
+  ) {
+    let getHotelQuery = database("hotel")
+      .join("room", "hotel.id", "=", "room.hotel_id")
+      .leftJoin("book", "room.id", "=", "book.room_id")
+      .select("hotel.*")
+      .where(1, "=", 1);
+
+    if (stayingDate !== undefined && leavingDate !== undefined) {
+      getHotelQuery = getHotelQuery.andWhere(function () {
+        this.where("book.staying_date", ">=", leavingDate)
+          .orWhere("book.leaving_date", "<=", stayingDate)
+          .orWhereNull("book.staying_date");
+      });
+    }
+    if (roomType !== undefined) {
+      getHotelQuery = getHotelQuery.andWhere("room.type", "=", roomType);
+    }
+    if (hotelName !== undefined) {
+      let queryName = "%".concat(hotelName).concat("%");
+      getHotelQuery = getHotelQuery.andWhereILike("hotel.name", queryName);
+    }
+    if (hotelAddress !== undefined) {
+      let queryAddress = "%".concat(hotelAddress).concat("%");
+      getHotelQuery = getHotelQuery.andWhereILike(
+        "hotel.address",
+        queryAddress
+      );
+    }
+    getHotelQuery = getHotelQuery
+      .groupBy("hotel.id")
+      .having(database.raw("COUNT(room.id) >= ?", [roomNumber]));
+    getHotelQuery
+      .then((allHotels) => {
+        console.log(allHotels);
+        const startIndex = (pageNumber - 1) * pageSize;
+        const endIndex = startIndex + pageSize;
+        const hotels = allHotels.slice(startIndex, endIndex);
+        const pageTotal = Math.ceil(allHotels.length / pageSize);
+        res.json(new Pagination(pageSize, pageNumber, pageTotal, hotels));
+      })
+      .catch((err) => {
+        console.log(err);
+        res.json("Error");
+      });
+  }
 }
