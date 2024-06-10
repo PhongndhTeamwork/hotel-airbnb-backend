@@ -36,6 +36,25 @@ export const createBooking = (req, res) => {
   const { stayingDate, leavingDate } = req.body;
 
   if (userRole == 0) {
-    Booking.createBooking(res, roomId, userId);
+    Booking.createBooking(res, roomId, userId, stayingDate, leavingDate);
   }
 };
+
+export const getBooking = (req,res)=>{
+  const customerId = req.id;
+  const userRole = req.role;
+  const {pageSize, pageNumber} = req.query;
+
+  if(userRole == 0){
+    Booking.getBooking(res, customerId, pageSize, pageNumber)
+  }
+}
+
+export const deleteBooking = (req, res) => {
+  const customerId = req.id;
+  const userRole = req.role;
+  const {bookingId} = req.params;
+  if(userRole == 0){
+    Booking.deleteBooking(res, customerId, bookingId);
+  }
+}
