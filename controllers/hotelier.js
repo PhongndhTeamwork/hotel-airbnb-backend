@@ -4,81 +4,106 @@ import { Room } from "../models/room.js";
 //!CREATE HOTEL
 export const createHotel = (req, res) => {
   const { name, address, price, star, description, service, image } = req.body;
-  const user_id = req.id;
-
-  const hotel = new Hotel(
-    name,
-    address,
-    price,
-    star,
-    description,
-    service,
-    image
-  );
-  hotel.createHotel(res, user_id);
+  const userId = req.id;
+  const userRole = req.role;
+  console.log(userRole);
+  if (userRole == 1) {
+    const hotel = new Hotel(
+      name,
+      address,
+      price,
+      star,
+      description,
+      service,
+      image
+    );
+    hotel.createHotel(res, userId);
+  }
 };
 
 //! GET HOTEL
 export const getHotel = (req, res) => {
   const { pageSize, pageNumber } = req.query;
-  const user_id = req.id;
-  Hotel.getHotel(res, user_id, pageSize, pageNumber);
+  const userId = req.id;
+  const userRole = req.role;
+  if (userRole == 1) {
+    Hotel.getHotel(res, userId, pageSize, pageNumber);
+  }
 };
 
 //!UPDATE HOTEL
 export const updateHotel = (req, res) => {
   const { name, address, price, star, description, service, image } = req.body;
-  const user_id = req.id;
-  const { hotel_id } = req.params;
+  const userId = req.id;
+  const userRole = req.role;
+  const { hotelId } = req.params;
 
-  Hotel.updateHotel(
-    res,
-    user_id,
-    hotel_id,
-    name,
-    address,
-    price,
-    star,
-    description,
-    service,
-    image
-  );
+  if (userRole == 1) {
+    Hotel.updateHotel(
+      res,
+      userId,
+      hotelId,
+      name,
+      address,
+      price,
+      star,
+      description,
+      service,
+      image
+    );
+  }
 };
 
 //!DELETE HOTEL
 export const deleteHotel = (req, res) => {
-  const user_id = req.id;
-  const { hotel_id } = req.params;
+  const userId = req.id;
+  const userRole = req.role;
+  const { hotelId } = req.params;
 
-  Hotel.deleteHotel(res, user_id, hotel_id);
+  if (userRole == 1) {
+    Hotel.deleteHotel(res, userId, hotelId);
+  }
 };
 
 //! CREATE ROOM
 export const createRoom = (req, res) => {
-  const { hotel_id } = req.params;
+  const { hotelId } = req.params;
+  const userRole = req.role;
   const { type, price, area, image, service } = req.body;
 
-  const room = new Room(type, price, area, image, service);
-  room.createRoom(res, hotel_id);
+  if (userRole == 1) {
+    const room = new Room(type, price, area, image, service);
+    room.createRoom(res, hotelId);
+  }
 };
 
 //! GET ROOM
 export const getRoom = (req, res) => {
   const { pageSize, pageNumber } = req.query;
-  const { hotel_id } = req.params;
-  Room.getRoom(res, hotel_id, pageSize, pageNumber);
+  const { hotelId } = req.params;
+  const userRole = req.role;
+
+  if (userRole == 1) {
+    Room.getRoom(res, hotelId, pageSize, pageNumber);
+  }
 };
 
 //! UPDATE ROOM
 export const updateRoom = (req, res) => {
-  const { hotel_id, room_id } = req.params;
+  const { hotelId, roomId } = req.params;
   const { type, price, area, image, service } = req.body;
+  const userRole = req.role;
 
-  Room.updateRoom(res, hotel_id, room_id, type, price, area, image, service);
+  if (userRole == 1) {
+    Room.updateRoom(res, hotelId, roomId, type, price, area, image, service);
+  }
 };
 
 //! DELETE ROOM
 export const deleteRoom = (req, res) => {
-  const { hotel_id, room_id } = req.params;
-  Room.deleteRoom(res, hotel_id, room_id);
+  const { hotelId, roomId } = req.params;
+  const userRole = req.role;
+  if (userRole == 1) {
+    Room.deleteRoom(res, hotelId, roomId);
+  }
 };

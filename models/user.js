@@ -79,4 +79,39 @@ export class User {
         res.status(400).json("wrong credentials");
       });
   }
+
+  //! GET PROFILE
+  static getProfile(res, userId) {
+    database("users")
+      .where("id", "=", userId)
+      .select("*")
+      .then((data) => {
+        res.json(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json("Error!");
+      });
+  }
+
+  //! UPDATE PROFILE
+  static updateProfile(res, userId, name, dob, email, gender, phoneNumber) {
+    database("users")
+      .where("id", "=", userId)
+      .update({
+        name: name,
+        dob: dob,
+        email: email,
+        gender: gender,
+        phone_number: phoneNumber,
+      })
+      .returning("*")
+      .then((user) => {
+        res.json(user);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json("Error!");
+      });
+  }
 }
