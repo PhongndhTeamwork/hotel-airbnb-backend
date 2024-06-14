@@ -29,11 +29,11 @@ export class User {
             return trx("users")
               .returning("*")
               .insert({
-                role: this.role,
                 phone_number: loginPhoneNumber[0].phone_number,
                 name: this.name,
                 dob: this.dob,
                 email: this.email,
+                role: this.role,
                 register_datetime: new Date(),
               })
               .then((user) => {
@@ -44,7 +44,10 @@ export class User {
           .catch(trx.rollback);
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.code);
+        if (err.code == "23505") {
+          return res.status(400).json("phone number is duplicated");
+        }
         res.status(400).json("unable to register");
       });
   }
@@ -55,6 +58,9 @@ export class User {
       .from("login")
       .where("phone_number", "=", this.phone_number)
       .then((data) => {
+        if (data.length == 0) {
+          return res.status(400).json("wrong credentials");
+        }
         const isValid = bcrypt.compareSync(password, data[0].password);
         if (isValid) {
           return database
@@ -63,9 +69,9 @@ export class User {
             .where("phone_number", "=", this.phone_number)
             .then((user) => {
               const token = jwt.sign(user[0], process.env.JWT_KEY, {
-                expiresIn: "2d",
+                expiresIn: "1d",
               });
-              res.json({ token: token, ...user[0] });
+              res.status(200).json({ token: token, ...user[0] });
             })
             .catch((err) => {
               console.log(err);
