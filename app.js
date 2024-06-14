@@ -10,6 +10,8 @@ import { router as userRoutes } from "./routes/user.js";
 
 dotenv.config();
 
+const app = express();
+
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "images");
@@ -44,7 +46,7 @@ app.use(
     credentials: true,
   })
 );
-app.use("/images", express.static(imageDir));
+app.use("/images", express.static("images"));
 
 app.use(authRoutes);
 app.use(hotelRoutes);
