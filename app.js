@@ -65,5 +65,5 @@ app.use(customerRoutes);
 app.use(userRoutes);
 
 app.listen(process.env.PORT, () => {
-  console.log("app is running on port 5000");
+  console.log("app is running on port "+process.env.PORT);
 });
