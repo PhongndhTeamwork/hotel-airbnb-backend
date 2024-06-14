@@ -1,31 +1,18 @@
 import express from "express";
 import bodyParser from "body-parser";
 import multer from "multer";
-import path from "path";
 import cors from "cors";
-import fs from "fs";
 import dotenv from "dotenv";
 import { router as authRoutes } from "./routes/auth.js";
 import { router as hotelRoutes } from "./routes/hotelier.js";
 import { router as customerRoutes } from "./routes/customer.js";
 import { router as userRoutes } from "./routes/user.js";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
 
 dotenv.config();
 
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const app = express();
-
-const imageDir = path.join(__dirname, "images");
-
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, imageDir);
+    cb(null, "images");
   },
   filename: (req, file, cb) => {
     cb(
@@ -65,5 +52,5 @@ app.use(customerRoutes);
 app.use(userRoutes);
 
 app.listen(process.env.PORT, () => {
-  console.log("app is running on port "+process.env.PORT);
+  console.log("app is running on port " + process.env.PORT);
 });

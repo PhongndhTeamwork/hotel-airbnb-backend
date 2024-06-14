@@ -8,7 +8,7 @@ export const createHotel = (req, res) => {
   const userId = req.id;
   const userRole = req.role;
 
-  // console.log(image);
+  console.log(image);
   console.log(userRole);
   if (userRole == 1) {
     const imageUrl = image.path;
