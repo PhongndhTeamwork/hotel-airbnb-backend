@@ -1,26 +1,54 @@
 import { Hotel } from "../models/hotel.js";
 import { Room } from "../models/room.js";
+import { Image } from "../models/image.js";
+
+//! CREATE IMAGE
+export const createImage = (req, res) => {
+  const { id } = req.params;
+  const { imageType } = req.query; // 0: hotel image, 1: room image
+  const image = req.file;
+  const userRole = req.role;
+
+  if (userRole == 1) {
+    const imagePath = image.path;
+
+    const roomImage = new Image(imagePath);
+    roomImage.createImage(res, id, imageType);
+  }
+};
+
+//! DELETE IMAGE
+export const deleteImage = (req, res) => {
+  const { id } = req.params;
+  const { imageType } = req.query; // 0: hotel image, 1: room image
+  const userId = req.id;
+  const userRole = req.role;
+
+  if (userRole == 1) {
+    Image.deleteImage(res, id, imageType, userId);
+  }
+};
 
 //!CREATE HOTEL
 export const createHotel = (req, res) => {
   const { name, address, price, star, description, service } = req.body;
-  const image = req.file;
+  // const image = req.file;
   const userId = req.id;
   const userRole = req.role;
 
-  console.log(image);
+  // console.log(image);
   console.log(userRole);
   if (userRole == 1) {
-    const imageUrl = image.path;
-    console.log(imageUrl);
+    // const imageUrl = image.path;
+    // console.log(imageUrl);
     const hotel = new Hotel(
       name,
       address,
       price,
       star,
       description,
-      service,
-      imageUrl
+      service
+      // imageUrl
     );
     hotel.createHotel(res, userId);
   }

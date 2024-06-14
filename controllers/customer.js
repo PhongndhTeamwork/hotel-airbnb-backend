@@ -2,7 +2,7 @@ import { Hotel } from "../models/hotel.js";
 import { Booking } from "../models/booking.js";
 
 export const getHotelAsCustomer = (req, res) => {
-  const userRole = req.userRole;
+  const role = req.role;
   const {
     pageSize,
     pageNumber,
@@ -14,7 +14,7 @@ export const getHotelAsCustomer = (req, res) => {
     roomNumber,
   } = req.query;
 
-  if (userRole == 0) {
+  if (role == 0) {
     Hotel.getHotelAsCustomer(
       res,
       stayingDate,
@@ -40,21 +40,21 @@ export const createBooking = (req, res) => {
   }
 };
 
-export const getBooking = (req,res)=>{
+export const getBooking = (req, res) => {
   const customerId = req.id;
   const userRole = req.role;
-  const {pageSize, pageNumber} = req.query;
+  const { pageSize, pageNumber } = req.query;
 
-  if(userRole == 0){
-    Booking.getBooking(res, customerId, pageSize, pageNumber)
+  if (userRole == 0) {
+    Booking.getBooking(res, customerId, pageSize, pageNumber);
   }
-}
+};
 
 export const deleteBooking = (req, res) => {
   const customerId = req.id;
   const userRole = req.role;
-  const {bookingId} = req.params;
-  if(userRole == 0){
+  const { bookingId } = req.params;
+  if (userRole == 0) {
     Booking.deleteBooking(res, customerId, bookingId);
   }
-}
+};

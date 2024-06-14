@@ -1,5 +1,7 @@
 import express from "express";
 import {
+  createImage,
+  deleteImage,
   createHotel,
   getHotel,
   deleteHotel,
@@ -13,6 +15,9 @@ import isAuth from "../middlewares/is-auth.js";
 import checkRole from "../middlewares/check-role.js";
 
 const router = express.Router();
+
+router.post("/create-image/:id", checkRole, createImage);
+router.delete("/delete-image/:id", isAuth, checkRole, deleteImage);
 
 router.post("/create-hotel", isAuth, checkRole, createHotel);
 router.get("/get-hotel", isAuth, checkRole, getHotel);

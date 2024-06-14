@@ -11,10 +11,10 @@ export class Room {
   }
 
   //!CREATE ROOM
-  createRoom(res, hotel_id) {
+  createRoom(res, hotelId) {
     database
       .insert({
-        hotel_id: hotel_id,
+        hotel_id: hotelId,
         type: this.type,
         price: this.price,
         area: this.area,
@@ -34,9 +34,9 @@ export class Room {
   }
 
   //! GET ROOM
-  static getRoom(res, hotel_id, pageSize, pageNumber) {
+  static getRoom(res, hotelId, pageSize, pageNumber) {
     database("room")
-      .where("hotel_id", "=", hotel_id)
+      .where("hotel_id", "=", hotelId)
       .select("*")
       .then((allRooms) => {
         const startIndex = (pageNumber - 1) * pageSize;
@@ -51,11 +51,25 @@ export class Room {
       });
   }
 
-  //!UPDATE ROOM
-  static updateRoom(res, hotel_id, room_id, type, price, area, image, service) {
+  //! GET ROOM DETAIL
+  static getRoomDetail(res, roomId) {
     database("room")
-      .where("hotel_id", "=", hotel_id)
-      .andWhere("id", "=", room_id)
+      .where("id", "=", roomId)
+      .select("*")
+      .then((data) => {
+        res.json(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.json("Error!");
+      });
+  }
+
+  //!UPDATE ROOM
+  static updateRoom(res, hotelId, roomId, type, price, area, image, service) {
+    database("room")
+      .where("hotel_id", "=", hotelId)
+      .andWhere("id", "=", roomId)
       .update({
         type: type,
         price: price,
@@ -74,10 +88,10 @@ export class Room {
   }
 
   //!DELETE ROOM
-  static deleteRoom(res, hotel_id, room_id) {
+  static deleteRoom(res, hotelId, roomId) {
     database("room")
-      .where("hotel_id", "=", hotel_id)
-      .andWhere("id", "=", room_id)
+      .where("hotel_id", "=", hotelId)
+      .andWhere("id", "=", roomId)
       .del()
       .then(() => {
         res.json("Deleted!");

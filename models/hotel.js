@@ -13,10 +13,10 @@ export class Hotel {
   }
 
   //!CREATE HOTEL
-  createHotel(res, hotelier_id) {
+  createHotel(res, hotelierId) {
     database
       .insert({
-        hotelier_id: hotelier_id,
+        hotelier_id: hotelierId,
         name: this.name,
         address: this.address,
         price: this.price,
@@ -37,9 +37,9 @@ export class Hotel {
   }
 
   //! GET HOTEL
-  static getHotel(res, hotelier_id, pageSize, pageNumber) {
+  static getHotel(res, hotelierId, pageSize, pageNumber) {
     database("hotel")
-      .where("hotelier_id", "=", hotelier_id)
+      .where("hotelier_id", "=", hotelierId)
       .orderBy("id")
       .select("*")
       .then((allHotels) => {
@@ -57,11 +57,25 @@ export class Hotel {
       });
   }
 
+  //! GET HOTEL DETAIL
+  static getHotelDetail(res, hotelId) {
+    database("hotel")
+      .where("id", "=", hotelId)
+      .select("*")
+      .then((data) => {
+        res.status(200).json(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.json("Error");
+      });
+  }
+
   //!UPDATE HOTEL
   static updateHotel(
     res,
-    hotelier_id,
-    hotel_id,
+    hotelierId,
+    hotelId,
     name,
     address,
     price,
@@ -71,8 +85,8 @@ export class Hotel {
     image
   ) {
     database("hotel")
-      .where("id", "=", hotel_id)
-      .andWhere("hotelier_id", "=", hotelier_id)
+      .where("id", "=", hotelId)
+      .andWhere("hotelier_id", "=", hotelierId)
       .update({
         name: name,
         address: address,
@@ -93,10 +107,10 @@ export class Hotel {
   }
 
   //!DELETE HOTEL
-  static deleteHotel(res, hotelier_id, hotel_id) {
+  static deleteHotel(res, hotelierId, hotelId) {
     database("hotel")
-      .where("id", "=", hotel_id)
-      .andWhere("hotelier_id", "=", hotelier_id)
+      .where("id", "=", hotelId)
+      .andWhere("hotelier_id", "=", hotelierId)
       .del()
       .then((data) => {
         res.json("Deleted!");
