@@ -29,6 +29,7 @@ export class User {
             return trx("users")
               .returning("*")
               .insert({
+                role: this.role,
                 phone_number: loginPhoneNumber[0].phone_number,
                 name: this.name,
                 dob: this.dob,

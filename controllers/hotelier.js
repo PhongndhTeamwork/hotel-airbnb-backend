@@ -3,11 +3,16 @@ import { Room } from "../models/room.js";
 
 //!CREATE HOTEL
 export const createHotel = (req, res) => {
-  const { name, address, price, star, description, service, image } = req.body;
+  const { name, address, price, star, description, service } = req.body;
+  const image = req.file;
   const userId = req.id;
   const userRole = req.role;
+
+  // console.log(image);
   console.log(userRole);
   if (userRole == 1) {
+    const imageUrl = image.path;
+    console.log(imageUrl);
     const hotel = new Hotel(
       name,
       address,
@@ -15,7 +20,7 @@ export const createHotel = (req, res) => {
       star,
       description,
       service,
-      image
+      imageUrl
     );
     hotel.createHotel(res, userId);
   }

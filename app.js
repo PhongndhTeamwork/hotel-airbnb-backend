@@ -3,22 +3,35 @@ import bodyParser from "body-parser";
 import multer from "multer";
 import path from "path";
 import cors from "cors";
+import fs from "fs";
 import dotenv from "dotenv";
 import { router as authRoutes } from "./routes/auth.js";
 import { router as hotelRoutes } from "./routes/hotelier.js";
 import { router as customerRoutes } from "./routes/customer.js";
 import { router as userRoutes } from "./routes/user.js";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 
 dotenv.config();
 
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const app = express();
 
+const imageDir = path.join(__dirname, "images");
+
 const fileStorage = multer.diskStorage({
-  destination: (req, dile, cb) => {
-    cb(null, "images");
+  destination: (req, file, cb) => {
+    cb(null, imageDir);
   },
   filename: (req, file, cb) => {
-    cb(null, new Date().toISOString() + "-" + file.originalname);
+    cb(
+      null,
+      new Date().toISOString().replace(/:/g, "-") + "-" + file.originalname
+    );
   },
 });
 
@@ -35,29 +48,16 @@ const fileFilter = (req, file, cb) => {
 };
 
 app.use(bodyParser.json());
-app.use("/images", express.static("images"));
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
 );
+
 app.use(
   cors({
     credentials: true,
   })
 );
-
-// test
-app.post("/upload", async (req, res) => {
-  try {
-    const { filename, path: filepath } = req.file;
-
-    // Insert file metadata into the database
-    // await db("images").insert({ filename, filepath });
-
-    res.json({ message: "File uploaded successfully", file: req.file });
-  } catch (error) {
-    res.status(500).json({ message: "Failed to upload file", error });
-  }
-});
+app.use("/images", express.static(imageDir));
 
 app.use(authRoutes);
 app.use(hotelRoutes);

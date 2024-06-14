@@ -10,16 +10,17 @@ import {
   deleteRoom,
 } from "../controllers/hotelier.js";
 import isAuth from "../middlewares/is-auth.js";
+import checkRole from "../middlewares/check-role.js";
 
 const router = express.Router();
 
-router.post("/create-hotel", isAuth, createHotel);
-router.get("/get-hotel", isAuth, getHotel);
-router.put("/update-hotel/:hotelId", isAuth, updateHotel);
-router.delete("/delete-hotel/:hotelId", isAuth, deleteHotel);
+router.post("/create-hotel", isAuth, checkRole, createHotel);
+router.get("/get-hotel", isAuth, checkRole, getHotel);
+router.put("/update-hotel/:hotelId", isAuth, checkRole, updateHotel);
+router.delete("/delete-hotel/:hotelId", isAuth, checkRole, deleteHotel);
 
-router.post("/create-room/:hotelId", createRoom);
-router.get("/get-room/:hotelId", getRoom);
-router.put("/update-room/:hotelId/:roomId", updateRoom);
-router.delete("/delete-room/:hotelId/:roomId", deleteRoom);
+router.post("/create-room/:hotelId", checkRole, createRoom);
+router.get("/get-room/:hotelId", checkRole, getRoom);
+router.put("/update-room/:hotelId/:roomId", checkRole, updateRoom);
+router.delete("/delete-room/:hotelId/:roomId", checkRole, deleteRoom);
 export { router };
