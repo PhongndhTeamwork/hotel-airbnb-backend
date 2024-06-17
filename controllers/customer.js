@@ -1,5 +1,6 @@
 import { Hotel } from "../models/hotel.js";
 import { Booking } from "../models/booking.js";
+import { Feedback } from "../models/feedback.js";
 
 export const getHotelAsCustomer = (req, res) => {
   const role = req.role;
@@ -67,5 +68,35 @@ export const deleteBooking = (req, res) => {
   const { bookingId } = req.params;
   if (userRole == 0) {
     Booking.deleteBooking(res, customerId, bookingId);
+  }
+};
+
+export const createFeedback = (req, res) => {
+  const { hotelId } = req.params;
+  const { review, rating } = req.body;
+  const customerId = req.id;
+  const userRole = req.role;
+
+  if (userRole == 0) {
+    const feedback = new Feedback(review, rating);
+
+    feedback.createFeedback(res, hotelId, customerId);
+  }
+};
+
+export const getFeedback = (req, res) => {
+  const { hotelId } = req.params;
+  const { pageSize, pageNumber } = req.query;
+
+  Feedback.getFeedback(res, hotelId, pageSize, pageNumber);
+};
+
+export const deleteFeedback = (req, res) => {
+  const { feedbackId } = req.params;
+  const customerId = req.id;
+  const userRole = req.role;
+
+  if (userRole == 0) {
+    Feedback.deleteFeedback(res, feedbackId, customerId);
   }
 };
