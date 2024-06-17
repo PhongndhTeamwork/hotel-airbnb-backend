@@ -30,13 +30,13 @@ export const getHotelAsCustomer = (req, res) => {
 };
 
 export const createBooking = (req, res) => {
-  const userId = req.id;
+  const customerId = req.id;
   const userRole = req.role;
   const { roomId } = req.params;
   const { stayingDate, leavingDate } = req.body;
 
   if (userRole == 0) {
-    Booking.createBooking(res, roomId, userId, stayingDate, leavingDate);
+    Booking.createBooking(res, roomId, customerId, stayingDate, leavingDate);
   }
 };
 
@@ -47,6 +47,17 @@ export const getBooking = (req, res) => {
 
   if (userRole == 0) {
     Booking.getBooking(res, customerId, pageSize, pageNumber);
+  }
+};
+
+export const getBookingDetail = (req, res) => {
+  const customerId = req.id;
+  const userRole = req.role;
+
+  const { bookingId } = req.params;
+
+  if (userRole == 0) {
+    Booking.getBookingDetail(res, customerId, bookingId);
   }
 };
 
