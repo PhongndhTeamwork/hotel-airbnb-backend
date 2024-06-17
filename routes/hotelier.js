@@ -1,7 +1,5 @@
 import express from "express";
 import {
-  createImage,
-  deleteImage,
   createHotel,
   getHotel,
   deleteHotel,
@@ -10,14 +8,18 @@ import {
   getRoom,
   updateRoom,
   deleteRoom,
+  createImage,
+  deleteImage,
+  addService,
+  getServiceByHotelier,
+  deleteServiceByHotelier,
+  getImage,
+  updateImage,
 } from "../controllers/hotelier.js";
 import isAuth from "../middlewares/is-auth.js";
 import checkRole from "../middlewares/check-role.js";
 
 const router = express.Router();
-
-router.post("/create-image/:id", checkRole, createImage);
-router.delete("/delete-image/:id", isAuth, checkRole, deleteImage);
 
 router.post("/create-hotel", isAuth, checkRole, createHotel);
 router.get("/get-hotel", isAuth, checkRole, getHotel);
@@ -28,4 +30,18 @@ router.post("/create-room/:hotelId", checkRole, createRoom);
 router.get("/get-room/:hotelId", checkRole, getRoom);
 router.put("/update-room/:hotelId/:roomId", checkRole, updateRoom);
 router.delete("/delete-room/:hotelId/:roomId", checkRole, deleteRoom);
+
+router.post("/create-image/:id", checkRole, createImage);
+router.get("/get-image/:id", getImage);
+router.put("/update-image/:id", isAuth, checkRole, updateImage);
+router.delete("/delete-image/:id", isAuth, checkRole, deleteImage);
+
+router.post("/add-service/:hotelId", isAuth, checkRole, addService);
+router.get("/get-service-by-hotelier/:hotelId", getServiceByHotelier);
+router.delete(
+  "/delete-service-by-hotelier/:hotelId",
+  isAuth,
+  checkRole,
+  deleteServiceByHotelier
+);
 export { router };

@@ -32,13 +32,17 @@ export class Image {
   }
 
   //! GET IMAGE
-  static getImage(res, hotelId, roomId) {
-    database("image")
-      .where("hotel_id", "=", hotelId)
-      .orderBy("id")
+  static getImage(res, id, imageType) {
+    let getImageQuery = database("image");
+    if (imageType == 0) {
+      getImageQuery = getImageQuery.where("hotel_id", "=", id);
+    } else {
+      getImageQuery = getImageQuery.where("room_id", "=", id);
+    }
+    getImageQuery
       .select("*")
       .then((images) => {
-        res.status(200).json(images);
+        res.json(images);
       })
       .catch((err) => {
         console.log(err);
@@ -47,19 +51,37 @@ export class Image {
   }
 
   //!UPDATE IMAGE
-  static updateImage(res, hotelId, roomId, imagePath) {
-    database("image")
-      .where("hotel_id", "=", hotelId)
-      .update({
-        imagePath: imagePath,
+  static updateImage(res, id, imageType, imagePath, hotelierId) {
+    let updateImageQuery = database("image");
+    if (imageType == 0) {
+      updateImageQuery = updateImageQuery
+        .join("hotel", "hotel.id", "=", "image.hotel_id")
+        .where("image.hotel_id", "=", id)
+        .andWhere("hotel.hotelier_id", "=", hotelierId);
+    } else {
+      updateImageQuery = updateImageQuery
+        .join("room", "room.id", "=", "image.room_id")
+        .join("hotel", "room.hotel_id", "=", "hotel.id")
+        .where("room_id", "=", id)
+        .andWhere("hotel.hotelier_id", "=", hotelierId);
+    }
+    updateImageQuery
+      .select("image.id")
+      .then((imageIds) => {
+        const imageId = imageIds[0].id;
+        return database("image")
+          .where("id", "=", imageId)
+          .update({
+            image_path: imagePath,
+          })
+          .returning("*");
       })
-      .returning("*")
       .then((data) => {
         res.json(data);
       })
       .catch((err) => {
+        res.json("Error");
         console.log(err);
-        res.status(400).json("Error!");
       });
   }
 

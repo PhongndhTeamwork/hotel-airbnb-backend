@@ -2,12 +2,8 @@ import database from "../utils/database.js";
 import { Pagination } from "./pagination.js";
 
 export class Room {
-  constructor(type, price, area, image, service) {
-    (this.type = type),
-      (this.price = price),
-      (this.area = area),
-      (this.image = image),
-      (this.service = service);
+  constructor(type, price, area) {
+    (this.type = type), (this.price = price), (this.area = area);
   }
 
   //!CREATE ROOM
@@ -18,8 +14,6 @@ export class Room {
         type: this.type,
         price: this.price,
         area: this.area,
-        image: this.image,
-        service: this.service,
       })
       .into("room")
       .returning("*")
@@ -66,7 +60,7 @@ export class Room {
   }
 
   //!UPDATE ROOM
-  static updateRoom(res, hotelId, roomId, type, price, area, image, service) {
+  static updateRoom(res, hotelId, roomId, type, price, area) {
     database("room")
       .where("hotel_id", "=", hotelId)
       .andWhere("id", "=", roomId)
@@ -74,8 +68,6 @@ export class Room {
         type: type,
         price: price,
         area: area,
-        image: image,
-        service: service,
       })
       .returning("*")
       .then((data) => {

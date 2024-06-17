@@ -4,9 +4,10 @@ import multer from "multer";
 import cors from "cors";
 import dotenv from "dotenv";
 import { router as authRoutes } from "./routes/auth.js";
-import { router as hotelRoutes } from "./routes/hotelier.js";
+import { router as hotelierRoutes } from "./routes/hotelier.js";
 import { router as customerRoutes } from "./routes/customer.js";
 import { router as userRoutes } from "./routes/user.js";
+import { router as adminRoutes } from "./routes/admin.js";
 
 dotenv.config();
 
@@ -49,9 +50,10 @@ app.use(
 app.use("/images", express.static("images"));
 
 app.use(authRoutes);
-app.use(hotelRoutes);
+app.use(hotelierRoutes);
 app.use(customerRoutes);
 app.use(userRoutes);
+app.use(adminRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log("app is running on port " + process.env.PORT);

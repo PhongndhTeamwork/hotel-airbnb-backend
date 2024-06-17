@@ -1,37 +1,11 @@
 import { Hotel } from "../models/hotel.js";
 import { Room } from "../models/room.js";
 import { Image } from "../models/image.js";
-
-//! CREATE IMAGE
-export const createImage = (req, res) => {
-  const { id } = req.params;
-  const { imageType } = req.query; // 0: hotel image, 1: room image
-  const image = req.file;
-  const userRole = req.role;
-
-  if (userRole == 1) {
-    const imagePath = image.path;
-
-    const roomImage = new Image(imagePath);
-    roomImage.createImage(res, id, imageType);
-  }
-};
-
-//! DELETE IMAGE
-export const deleteImage = (req, res) => {
-  const { id } = req.params;
-  const { imageType } = req.query; // 0: hotel image, 1: room image
-  const userId = req.id;
-  const userRole = req.role;
-
-  if (userRole == 1) {
-    Image.deleteImage(res, id, imageType, userId);
-  }
-};
+import { Service } from "../models/service.js";
 
 //!CREATE HOTEL
 export const createHotel = (req, res) => {
-  const { name, address, price, star, description, service } = req.body;
+  const { name, address, price, star, description } = req.body;
   // const image = req.file;
   const userId = req.id;
   const userRole = req.role;
@@ -46,8 +20,7 @@ export const createHotel = (req, res) => {
       address,
       price,
       star,
-      description,
-      service
+      description
       // imageUrl
     );
     hotel.createHotel(res, userId);
@@ -66,7 +39,7 @@ export const getHotel = (req, res) => {
 
 //!UPDATE HOTEL
 export const updateHotel = (req, res) => {
-  const { name, address, price, star, description, service, image } = req.body;
+  const { name, address, price, star, description } = req.body;
   const userId = req.id;
   const userRole = req.role;
   const { hotelId } = req.params;
@@ -80,9 +53,7 @@ export const updateHotel = (req, res) => {
       address,
       price,
       star,
-      description,
-      service,
-      image
+      description
     );
   }
 };
@@ -102,10 +73,10 @@ export const deleteHotel = (req, res) => {
 export const createRoom = (req, res) => {
   const { hotelId } = req.params;
   const userRole = req.role;
-  const { type, price, area, image, service } = req.body;
+  const { type, price, area } = req.body;
 
   if (userRole == 1) {
-    const room = new Room(type, price, area, image, service);
+    const room = new Room(type, price, area);
     room.createRoom(res, hotelId);
   }
 };
@@ -124,11 +95,11 @@ export const getRoom = (req, res) => {
 //! UPDATE ROOM
 export const updateRoom = (req, res) => {
   const { hotelId, roomId } = req.params;
-  const { type, price, area, image, service } = req.body;
+  const { type, price, area } = req.body;
   const userRole = req.role;
 
   if (userRole == 1) {
-    Room.updateRoom(res, hotelId, roomId, type, price, area, image, service);
+    Room.updateRoom(res, hotelId, roomId, type, price, area);
   }
 };
 
@@ -138,5 +109,83 @@ export const deleteRoom = (req, res) => {
   const userRole = req.role;
   if (userRole == 1) {
     Room.deleteRoom(res, hotelId, roomId);
+  }
+};
+
+//! CREATE IMAGE
+export const createImage = (req, res) => {
+  const { id } = req.params;
+  const { imageType } = req.query; // 0: hotel image, 1: room image
+  const image = req.file;
+  const userRole = req.role;
+
+  if (userRole == 1) {
+    const imagePath = image.path;
+
+    const roomImage = new Image(imagePath);
+    roomImage.createImage(res, id, imageType);
+  }
+};
+
+//! GET IMAGE
+export const getImage = (req, res) => {
+  const { id } = req.params;
+  const { imageType } = req.query;
+  Image.getImage(res, id, imageType);
+};
+
+//! UPDATE IMAGE
+export const updateImage = (req, res) => {
+  const { id } = req.params;
+  const { imageType } = req.query;
+  const image = req.file;
+  const imagePath = image.path;
+  const hotelierId = req.id;
+  const userRole = req.role;
+
+  if (userRole == 1) {
+    Image.updateImage(res, id, imageType, imagePath, hotelierId);
+  }
+};
+
+//! DELETE IMAGE
+export const deleteImage = (req, res) => {
+  const { id } = req.params;
+  const { imageType } = req.query; // 0: hotel image, 1: room image
+  const userId = req.id;
+  const userRole = req.role;
+
+  if (userRole == 1) {
+    Image.deleteImage(res, id, imageType, userId);
+  }
+};
+
+//! CREATE SERVICE
+export const addService = (req, res) => {
+  const { serviceId } = req.body;
+  const { hotelId } = req.params;
+  const hotelierId = req.id;
+  const userRole = req.role;
+
+  if (userRole == 1) {
+    Service.addService(res, serviceId, hotelId, hotelierId);
+  }
+};
+
+//! GET SERVICE
+export const getServiceByHotelier = (req, res) => {
+  const { hotelId } = req.params;
+  Service.getServiceByHotelier(res, hotelId);
+};
+
+//! DELETE SERVICE
+export const deleteServiceByHotelier = (req, res) => {
+  const { serviceId } = req.body;
+  const { hotelId } = req.params;
+  const hotelierId = req.id;
+  const userRole = req.role;
+
+  if (userRole == 1) {
+    Service.deleteServiceByHotelier(res, serviceId, hotelId, hotelierId);
   }
 };
