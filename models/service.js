@@ -37,19 +37,19 @@ export class Service {
       });
   }
 
-  // //! GET HOTEL DETAIL
-  // static getHotelDetail(res, hotelId) {
-  //   database("hotel")
-  //     .where("id", "=", hotelId)
-  //     .select("*")
-  //     .then((data) => {
-  //       res.status(200).json(data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       res.json("Error");
-  //     });
-  // }
+  //! GET SERVICE DETAIL
+  static getServiceDetail(res, serviceId) {
+    database("service")
+      .where("id", "=", serviceId)
+      .select("*")
+      .then((service) => {
+        res.status(200).json(service);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.json("Error");
+      });
+  }
 
   //!UPDATE SERVICE
   static updateService(res, serviceId, name, imagePath) {

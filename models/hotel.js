@@ -22,6 +22,7 @@ export class Hotel {
         description: this.description,
       })
       .into("hotel")
+      .returning("id")
       .then(() => {
         console.log("Success");
         res.json("Success");
