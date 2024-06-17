@@ -12,6 +12,12 @@ export const getService = (req, res) => {
   Service.getService(res);
 };
 
+export const getServiceDetail = (req, res) => {
+  const { serviceId } = req.params;
+
+  Service.getServiceDetail(res, serviceId);
+};
+
 export const updateService = (req, res) => {
   const { name } = req.body;
   const image = req.file;
