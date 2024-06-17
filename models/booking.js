@@ -34,10 +34,10 @@ export class Booking {
       .orderBy("id")
       .select("*")
       .then((allBookings) => {
-        const startIndex = (pageNumber - 1) * pageSize;
-        const endIndex = startIndex + pageSize;
+        const startIndex = (+pageNumber - 1) * +pageSize;
+        const endIndex = startIndex + +pageSize;
         const bookings = allBookings.slice(startIndex, endIndex);
-        const pageTotal = Math.ceil(allBookings.length / pageSize);
+        const pageTotal = Math.ceil(allBookings.length / +pageSize);
         res
           .status(200)
           .json(new Pagination(pageSize, pageNumber, pageTotal, bookings));

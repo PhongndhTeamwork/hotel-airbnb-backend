@@ -30,8 +30,9 @@ export const createHotel = (req, res) => {
 //! GET HOTEL
 export const getHotel = (req, res) => {
    let { pageSize, pageNumber } = req.query;
-   if (!pageSize) pageSize = 5;
-   if (!pageNumber) pageNumber = 1;
+   console.log(pageSize, pageNumber)
+   // if (!pageSize) pageSize = 5;
+   // if (!pageNumber) pageNumber = 1;
    const userId = req.id;
    const userRole = req.role;
    if (userRole == 1) {

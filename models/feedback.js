@@ -33,10 +33,10 @@ export class Feedback {
       .where("hotel_id", "=", hotelId)
       .select("*")
       .then((allFeedbacks) => {
-        const startIndex = (pageNumber - 1) * pageSize;
-        const endIndex = startIndex + pageSize;
+        const startIndex = (+pageNumber - 1) * +pageSize;
+        const endIndex = startIndex + +pageSize;
         const feedbacks = allFeedbacks.slice(startIndex, endIndex);
-        const pageTotal = Math.ceil(allFeedbacks.length / pageSize);
+        const pageTotal = Math.ceil(allFeedbacks.length / +pageSize);
         res
           .status(200)
           .json(new Pagination(pageSize, pageNumber, pageTotal, feedbacks));

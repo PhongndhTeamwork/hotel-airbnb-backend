@@ -33,10 +33,10 @@ export class Room {
       .where("hotel_id", "=", hotelId)
       .select("*")
       .then((allRooms) => {
-        const startIndex = (pageNumber - 1) * pageSize;
-        const endIndex = startIndex + pageSize;
+        const startIndex = (+pageNumber - 1) * +pageSize;
+        const endIndex = startIndex + +pageSize;
         const rooms = allRooms.slice(startIndex, endIndex);
-        const pageTotal = Math.ceil(allRooms.length / pageSize);
+        const pageTotal = Math.ceil(allRooms.length / +pageSize);
         res.json(new Pagination(pageSize, pageNumber, pageTotal, rooms));
       })
       .catch((err) => {
