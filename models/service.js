@@ -139,6 +139,22 @@ export class Service {
 
   // }
 
+  //! DELETE ALL SERVICES
+  static deleteAllServicesByHotelier(res, hotelId, hotelierId) {
+    database("hotel_service")
+      .join("hotel", "hotel.id", "=", "hotel_service.hotel_id")
+      .where("hotel.hotelier_id", "=", hotelierId)
+      .andWhere("hotel_service.hotel_id", "=", hotelId)
+      .del()
+      .then(() => {
+        res.json("Deleted");
+      })
+      .catch((err) => {
+        console.log(err);
+        res.json("Error");
+      });
+  }
+
   //! DELETE SERVICE - hotelier
   static deleteServiceByHotelier(res, serviceId, hotelId, hotelierId) {
     database("hotel")

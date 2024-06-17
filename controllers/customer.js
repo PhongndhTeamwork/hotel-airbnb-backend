@@ -1,6 +1,7 @@
 import { Hotel } from "../models/hotel.js";
 import { Booking } from "../models/booking.js";
 import { Feedback } from "../models/feedback.js";
+import { Room } from "../models/room.js";
 
 export const getHotelAsCustomer = (req, res) => {
   const role = req.role;
@@ -27,6 +28,16 @@ export const getHotelAsCustomer = (req, res) => {
       pageSize,
       pageNumber
     );
+  }
+};
+
+export const getRoomAsCustomer = (req, res) => {
+  const { hotelId } = req.params;
+  const { pageSize, pageNumber } = req.query;
+  const userRole = req.role;
+
+  if (userRole == 0) {
+    Room.getRoom(res, hotelId, pageSize, pageNumber);
   }
 };
 

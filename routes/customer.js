@@ -8,6 +8,7 @@ import {
   createFeedback,
   getFeedback,
   deleteFeedback,
+  getRoomAsCustomer,
 } from "../controllers/customer.js";
 import isAuth from "../middlewares/is-auth.js";
 import checkRole from "../middlewares/check-role.js";
@@ -15,6 +16,7 @@ import checkRole from "../middlewares/check-role.js";
 const router = express.Router();
 
 router.get("/get-hotel-as-customer", checkRole, getHotelAsCustomer);
+router.get("/get-room-as-customer/:hotelId", checkRole, getRoomAsCustomer);
 
 router.post("/create-booking/:roomId", isAuth, checkRole, createBooking);
 router.get("/get-booking", isAuth, checkRole, getBooking);

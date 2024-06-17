@@ -173,6 +173,17 @@ export const getServiceByHotelier = (req, res) => {
   Service.getServiceByHotelier(res, hotelId);
 };
 
+//! DELETE ALL SERVICES
+export const deleteAllServicesByHotelier = (req, res) => {
+  const { hotelId } = req.params;
+  const hotelierId = req.id;
+  const userRole = req.role;
+
+  if (userRole == 1) {
+    Service.deleteAllServicesByHotelier(res, hotelId, hotelierId);
+  }
+};
+
 //! DELETE SERVICE
 export const deleteServiceByHotelier = (req, res) => {
   const { serviceId } = req.body;

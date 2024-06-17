@@ -3,11 +3,14 @@ import bodyParser from "body-parser";
 import multer from "multer";
 import cors from "cors";
 import dotenv from "dotenv";
+import Stripe from "stripe";
 import { router as authRoutes } from "./routes/auth.js";
 import { router as hotelierRoutes } from "./routes/hotelier.js";
 import { router as customerRoutes } from "./routes/customer.js";
 import { router as userRoutes } from "./routes/user.js";
 import { router as adminRoutes } from "./routes/admin.js";
+
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 dotenv.config();
 
