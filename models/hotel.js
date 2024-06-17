@@ -23,9 +23,9 @@ export class Hotel {
       })
       .into("hotel")
       .returning("id")
-      .then(() => {
+      .then((data) => {
         console.log("Success");
-        res.json("Success");
+        res.json(data[0]);
       })
       .catch((err) => {
         console.log(err);
