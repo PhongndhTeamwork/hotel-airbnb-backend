@@ -46,6 +46,7 @@ export const createBooking = (req, res) => {
   const userRole = req.role;
   const { roomId } = req.params;
   const { stayingDate, leavingDate } = req.body;
+  console.log(roomId, customerId, stayingDate, leavingDate)
 
   if (userRole == 0) {
     Booking.createBooking(res, roomId, customerId, stayingDate, leavingDate);
