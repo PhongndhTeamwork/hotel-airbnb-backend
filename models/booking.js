@@ -30,9 +30,12 @@ export class Booking {
   //! GET BOOKING
   static getBooking(res, customerId, pageSize, pageNumber) {
     database("book")
-      .where("customer_id", "=", customerId)
-      .orderBy("id")
-      .select("*")
+      .join("room", "book.room_id", "=", "room.id")
+      .join("hotel", "hotel.id", "=", "room.hotel_id")
+      .where("book.id", "=", bookingId)
+      .andWhere("book.customer_id", "=", customerId)
+      .orderBy("book.id")
+      .select("book.*", "room.*", "hotel.*")
       .then((allBookings) => {
         const startIndex = (+pageNumber - 1) * +pageSize;
         const endIndex = startIndex + +pageSize;

@@ -48,8 +48,9 @@ export class Room {
   //! GET ROOM DETAIL
   static getRoomDetail(res, roomId) {
     database("room")
-      .where("id", "=", roomId)
-      .select("*")
+      .join("hotel", "hotel.id", "=", "room.hotel_id")
+      .where("room.id", "=", roomId)
+      .select("hotel.*", "room.*")
       .then((data) => {
         res.json(data);
       })
@@ -57,6 +58,21 @@ export class Room {
         console.log(err);
         res.json("Error!");
       });
+  }
+
+  //! GET ROOM BY ID
+  static getRoomAndHotelDetail(roomId) {
+    return database("room")
+      .join("hotel", "room.hotel_id", "hotel.id")
+      .where("room.id", roomId)
+      .select(
+        "room.id as roomId",
+        "room.price as roomPrice",
+        "room.type as roomType",
+        "hotel.name as hotelName",
+        "hotel.address as hotelAddress"
+      )
+      .first();
   }
 
   //!UPDATE ROOM
