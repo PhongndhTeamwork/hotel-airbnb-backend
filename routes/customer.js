@@ -9,6 +9,7 @@ import {
   getFeedback,
   deleteFeedback,
   getRoomAsCustomer,
+  createCheckoutSession,
 } from "../controllers/customer.js";
 import isAuth from "../middlewares/is-auth.js";
 import checkRole from "../middlewares/check-role.js";
@@ -36,5 +37,7 @@ router.delete(
   checkRole,
   deleteFeedback
 );
+
+router.post("/create-checkout-session", createCheckoutSession);
 
 export { router };
