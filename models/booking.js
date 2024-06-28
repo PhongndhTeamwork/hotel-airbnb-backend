@@ -32,7 +32,7 @@ export class Booking {
     database("book")
       .join("room", "book.room_id", "=", "room.id")
       .join("hotel", "hotel.id", "=", "room.hotel_id")
-      .where("book.id", "=", bookingId)
+      // .where("book.id", "=", bookingId)
       .andWhere("book.customer_id", "=", customerId)
       .orderBy("book.id")
       .select("book.*", "room.*", "hotel.*")
