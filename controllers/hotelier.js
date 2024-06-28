@@ -159,7 +159,6 @@ export const deleteImage = (req, res) => {
 export const deleteEachImage = (req, res) => {
   const { id, imageId } = req.params;
   const { imageType } = req.query; // 0: hotel image, 1: room image
-  console.log(id, imageId, imageType);
   const userId = req.id;
   const userRole = req.role;
 

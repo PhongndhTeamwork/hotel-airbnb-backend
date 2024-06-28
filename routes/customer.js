@@ -10,6 +10,8 @@ import {
   deleteFeedback,
   getRoomAsCustomer,
   createCheckoutSession,
+  updateBooking,
+  updateBookingStatus,
 } from "../controllers/customer.js";
 import isAuth from "../middlewares/is-auth.js";
 import checkRole from "../middlewares/check-role.js";
@@ -26,6 +28,12 @@ router.get(
   isAuth,
   checkRole,
   getBookingDetail
+);
+router.put(
+  "/update-booking-status/:bookingId",
+  isAuth,
+  checkRole,
+  updateBookingStatus
 );
 router.delete("/delete-booking/:bookingId", isAuth, checkRole, deleteBooking);
 
