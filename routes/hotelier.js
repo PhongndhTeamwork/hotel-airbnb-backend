@@ -16,6 +16,7 @@ import {
   getImage,
   updateImage,
   deleteAllServicesByHotelier,
+  deleteEachImage,
 } from "../controllers/hotelier.js";
 import isAuth from "../middlewares/is-auth.js";
 import checkRole from "../middlewares/check-role.js";
@@ -36,6 +37,12 @@ router.post("/create-image/:id", checkRole, createImage);
 router.get("/get-image/:id", getImage);
 router.put("/update-image/:id", isAuth, checkRole, updateImage);
 router.delete("/delete-image/:id", isAuth, checkRole, deleteImage);
+router.delete(
+  "/delete-each-image/:id/:imageId",
+  isAuth,
+  checkRole,
+  deleteEachImage
+);
 
 router.post("/add-service/:hotelId", isAuth, checkRole, addService);
 router.get("/get-service-by-hotelier/:hotelId", getServiceByHotelier);

@@ -1,4 +1,5 @@
 import database from "../utils/database.js";
+import { Pagination } from "./pagination.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
@@ -119,6 +120,26 @@ export class User {
       .catch((err) => {
         console.log(err);
         res.status(400).json("Error!");
+      });
+  }
+
+  //! GET USERS FOR ADMIN
+  static getUser(res, pageSize, pageNumber) {
+    database("users")
+      .orderBy("role")
+      .select("*")
+      .then((allUsers) => {
+        const startIndex = (+pageNumber - 1) * +pageSize;
+        const endIndex = startIndex + +pageSize;
+        const users = allUsers.slice(startIndex, endIndex);
+        const pageTotal = Math.ceil(allUsers.length / +pageSize);
+        res
+          .status(200)
+          .json(new Pagination(+pageSize, +pageNumber, pageTotal, users));
+      })
+      .catch((err) => {
+        console.log(err);
+        res.json("Error");
       });
   }
 }

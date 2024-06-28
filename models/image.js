@@ -111,4 +111,32 @@ export class Image {
         res.status(400).json("Error!");
       });
   }
+
+  //! DELETE EACH IMAGE
+  static deleteEachImage(res, id, imageType, hotelierId, imageId) {
+    let deleteImageQuery = database("image");
+
+    if (imageType == 0) {
+      deleteImageQuery = deleteImageQuery
+        .join("hotel", "hotel.id", "=", "image.hotel_id")
+        .where("hotel.hotelier_id", "=", hotelierId)
+        .andWhere("hotel_id", "=", id);
+    } else {
+      deleteImageQuery = deleteImageQuery
+        .join("room", "room.id", "=", "image.room_id")
+        .join("hotel", "hotel.id", "=", "room.hotel_id")
+        .where("hotel.hotelier_id", "=", hotelierId)
+        .andWhere("room_id", "=", id);
+    }
+    deleteImageQuery
+      .andWhere("image.id", "=", imageId)
+      .del()
+      .then(() => {
+        res.json("Deleted!");
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json("Error!");
+      });
+  }
 }

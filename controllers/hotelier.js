@@ -155,6 +155,19 @@ export const deleteImage = (req, res) => {
   }
 };
 
+//! DELETE EACH IMAGE
+export const deleteEachImage = (req, res) => {
+  const { id, imageId } = req.params;
+  const { imageType } = req.query; // 0: hotel image, 1: room image
+  console.log(id, imageId, imageType);
+  const userId = req.id;
+  const userRole = req.role;
+
+  if (userRole == 1) {
+    Image.deleteEachImage(res, id, imageType, userId, imageId);
+  }
+};
+
 //! CREATE SERVICE
 export const addService = (req, res) => {
   const { serviceId } = req.body;
