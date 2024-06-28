@@ -47,7 +47,7 @@ export const createBooking = (req, res) => {
   const userRole = req.role;
   const { roomId } = req.params;
   const { stayingDate, leavingDate } = req.body;
-  console.log(roomId, customerId, stayingDate, leavingDate)
+  console.log(roomId, customerId, stayingDate, leavingDate);
 
   if (userRole == 0) {
     Booking.createBooking(res, roomId, customerId, stayingDate, leavingDate);
@@ -72,6 +72,17 @@ export const getBookingDetail = (req, res) => {
 
   if (userRole == 0) {
     Booking.getBookingDetail(res, customerId, bookingId);
+  }
+};
+
+export const updateBookingStatus = (req, res) => {
+  const customerId = req.id;
+  const userRole = req.role;
+
+  const { bookingId } = req.params;
+
+  if (userRole == 0) {
+    Booking.updateBookingStatus(res, customerId, bookingId);
   }
 };
 

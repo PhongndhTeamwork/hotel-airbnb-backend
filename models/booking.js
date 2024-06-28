@@ -32,8 +32,7 @@ export class Booking {
     database("book")
       .join("room", "book.room_id", "=", "room.id")
       .join("hotel", "hotel.id", "=", "room.hotel_id")
-      .where("book.id", "=", bookingId)
-      .andWhere("book.customer_id", "=", customerId)
+      .where("book.customer_id", "=", customerId)
       .orderBy("book.id")
       .select("book.*", "room.*", "hotel.*")
       .then((allBookings) => {
@@ -60,6 +59,25 @@ export class Booking {
       .andWhere("book.customer_id", "=", customerId)
       .orderBy("book.id")
       .select("book.*", "room.*", "hotel.*")
+      .then((data) => {
+        res.json(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.json("Error");
+      });
+  }
+
+  //! UPDATE BOOKING
+  static updateBookingStatus(res, customerId, bookingId) {
+    database("book")
+      .join("room", "book.room_id", "=", "room.id")
+      .join("hotel", "hotel.id", "=", "room.hotel_id")
+      .where("book.id", "=", bookingId)
+      .andWhere("book.customer_id", "=", customerId)
+      .update({
+        status: 1,
+      })
       .then((data) => {
         res.json(data);
       })

@@ -40,13 +40,10 @@ export class Hotel {
       .orderBy("id")
       .select("*")
       .then((allHotels) => {
-        const startIndex = (+pageNumber - 1) * +pageSize; 
+        const startIndex = (+pageNumber - 1) * +pageSize;
         const endIndex = startIndex + +pageSize;
         const hotels = allHotels.slice(startIndex, endIndex);
         const pageTotal = Math.ceil(allHotels.length / +pageSize);
-        console.log(startIndex, endIndex)
-        console.log(hotels.length)
-        console.log(hotels)
         res
           .status(200)
           .json(new Pagination(+pageSize, +pageNumber, pageTotal, hotels));
