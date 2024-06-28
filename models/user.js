@@ -126,6 +126,7 @@ export class User {
   //! GET USERS FOR ADMIN
   static getUser(res, pageSize, pageNumber) {
     database("users")
+      .where("role", "!=", 2)
       .orderBy("role")
       .select("*")
       .then((allUsers) => {
