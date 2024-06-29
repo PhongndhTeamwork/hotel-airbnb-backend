@@ -2,6 +2,7 @@ import { Hotel } from "../models/hotel.js";
 import { Room } from "../models/room.js";
 import { Image } from "../models/image.js";
 import { Service } from "../models/service.js";
+import { Booking } from "../models/booking.js";
 
 //!CREATE HOTEL
 export const createHotel = (req, res) => {
@@ -205,5 +206,16 @@ export const deleteServiceByHotelier = (req, res) => {
 
   if (userRole == 1) {
     Service.deleteServiceByHotelier(res, serviceId, hotelId, hotelierId);
+  }
+};
+
+//! GET BOOKING AS HOTELIER
+export const getBookingAsHotelier = (req, res) => {
+  const { pageSize, pageNumber } = req.query;
+  const hotelierId = req.id;
+  const userRole = req.role;
+
+  if (userRole == 1) {
+    Booking.getBookingAsHotelier(res, hotelierId, pageSize, pageNumber);
   }
 };

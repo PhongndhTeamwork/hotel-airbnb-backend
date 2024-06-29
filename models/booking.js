@@ -50,6 +50,29 @@ export class Booking {
       });
   }
 
+  static getBookingAsHotelier(res, hotelierId, pageSize, pageNumber) {
+    database("book")
+      .join("room", "room.id", "=", "book.room_id")
+      .join("hotel", "hotel.id", "=", "room.hotel_id")
+      .join("users", "users.id", "=", "hotel.hotelier_id")
+      .where("hotel.hotelier_id", "=", hotelierId)
+      .orderBy("book.id")
+      .select("book.*", "room.*", "hotel.*")
+      .then((allBookings) => {
+        const startIndex = (+pageNumber - 1) * +pageSize;
+        const endIndex = startIndex + +pageSize;
+        const bookings = allBookings.slice(startIndex, endIndex);
+        const pageTotal = Math.ceil(allBookings.length / +pageSize);
+        res
+          .status(200)
+          .json(new Pagination(pageSize, pageNumber, pageTotal, bookings));
+      })
+      .catch((err) => {
+        console.log(err);
+        res.json("Error");
+      });
+  }
+
   //! GET BOOKING DETAIL
   static getBookingDetail(res, customerId, bookingId) {
     database("book")

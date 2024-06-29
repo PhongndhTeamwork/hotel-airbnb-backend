@@ -17,6 +17,7 @@ import {
   updateImage,
   deleteAllServicesByHotelier,
   deleteEachImage,
+  getBookingAsHotelier,
 } from "../controllers/hotelier.js";
 import isAuth from "../middlewares/is-auth.js";
 import checkRole from "../middlewares/check-role.js";
@@ -58,4 +59,6 @@ router.delete(
   checkRole,
   deleteServiceByHotelier
 );
+
+router.get("/get-booking-as-hotelier", isAuth, checkRole, getBookingAsHotelier);
 export { router };
