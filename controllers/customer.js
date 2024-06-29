@@ -54,6 +54,7 @@ export const createBooking = (req, res) => {
    }
 };
 
+
 export const getBooking = (req, res) => {
    const customerId = req.id;
    const userRole = req.role;
