@@ -52,6 +52,7 @@ app.use(
 );
 app.use("/images", express.static("images"));
 
+
 app.use(authRoutes);
 app.use(hotelierRoutes);
 app.use(customerRoutes);

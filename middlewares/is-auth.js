@@ -11,6 +11,7 @@ export default (req, res, next) => {
   if (!authHeader) {
     res.status(401).send("Unauthorized");
   }
+  console.log(authHeader);
   const token = authHeader.split(" ")[1];
   let decodedToken;
   try {

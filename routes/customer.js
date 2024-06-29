@@ -10,6 +10,7 @@ import {
   deleteFeedback,
   getRoomAsCustomer,
   createCheckoutSession,
+  // updateBooking,
   updateBookingStatus,
 } from "../controllers/customer.js";
 import isAuth from "../middlewares/is-auth.js";
