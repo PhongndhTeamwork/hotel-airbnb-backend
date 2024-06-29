@@ -6,13 +6,13 @@ import { Booking } from "../models/booking.js";
 
 //!CREATE HOTEL
 export const createHotel = (req, res) => {
-  const { name, address, price, star, description } = req.body;
+  const { name, address, price, star, description, location } = req.body;
   const userId = req.id;
   const userRole = req.role;
 
   console.log(userRole);
   if (userRole == 1) {
-    const hotel = new Hotel(name, address, price, star, description);
+    const hotel = new Hotel(name, address, price, star, description, location);
     hotel.createHotel(res, userId);
   }
 };
@@ -31,7 +31,7 @@ export const getHotel = (req, res) => {
 
 //!UPDATE HOTEL
 export const updateHotel = (req, res) => {
-  const { name, address, price, star, description } = req.body;
+  const { name, address, price, star, description, location } = req.body;
   const userId = req.id;
   const userRole = req.role;
   const { hotelId } = req.params;
@@ -45,7 +45,8 @@ export const updateHotel = (req, res) => {
       address,
       price,
       star,
-      description
+      description,
+      location
     );
   }
 };

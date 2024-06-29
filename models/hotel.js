@@ -2,12 +2,13 @@ import database from "../utils/database.js";
 import { Pagination } from "./pagination.js";
 
 export class Hotel {
-  constructor(name, address, price, star, description) {
+  constructor(name, address, price, star, description, location) {
     (this.name = name),
       (this.address = address),
       (this.price = price),
       (this.star = star),
-      (this.description = description);
+      (this.description = description),
+      (this.location = location);
   }
 
   //!CREATE HOTEL
@@ -20,6 +21,7 @@ export class Hotel {
         price: this.price,
         star: this.star,
         description: this.description,
+        location: this.location,
       })
       .into("hotel")
       .returning("id")
@@ -57,8 +59,9 @@ export class Hotel {
   //! GET HOTEL DETAIL
   static getHotelDetail(res, hotelId) {
     database("hotel")
-      .where("id", "=", hotelId)
-      .select("*")
+      .join("users", "users.id", "=", "hotel.hotelier_id")
+      .where("hotel.id", "=", hotelId)
+      .select("hotel.*", "users.*")
       .then((data) => {
         res.status(200).json(data);
       })
@@ -77,7 +80,8 @@ export class Hotel {
     address,
     price,
     star,
-    description
+    description,
+    location
   ) {
     database("hotel")
       .where("id", "=", hotelId)
@@ -88,6 +92,7 @@ export class Hotel {
         price: price,
         star: star,
         description: description,
+        location: location,
       })
       .returning("*")
       .then((data) => {
