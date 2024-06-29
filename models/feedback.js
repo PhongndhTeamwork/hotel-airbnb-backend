@@ -30,8 +30,9 @@ export class Feedback {
   //! GET FEEDBACK
   static getFeedback(res, hotelId, pageSize, pageNumber) {
     database("feedback")
+      .join("users", "users.id", "=", "feedback.customer_id")
       .where("hotel_id", "=", hotelId)
-      .select("*")
+      .select("feedback.id as feedbackId", "feedback.*", "users.*")
       .then((allFeedbacks) => {
         const startIndex = (+pageNumber - 1) * +pageSize;
         const endIndex = startIndex + +pageSize;
@@ -40,6 +41,7 @@ export class Feedback {
         res
           .status(200)
           .json(new Pagination(pageSize, pageNumber, pageTotal, feedbacks));
+        console.log(feedbacks);
       })
       .catch((err) => {
         console.log(err);
