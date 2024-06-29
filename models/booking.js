@@ -34,7 +34,7 @@ export class Booking {
       .join("hotel", "hotel.id", "=", "room.hotel_id")
       .where("book.customer_id", "=", customerId)
       .orderBy("book.id")
-      .select("book.*", "room.*", "hotel.*")
+      .select("book.id as bookId", "book.*", "room.*", "hotel.*")
       .then((allBookings) => {
         const startIndex = (+pageNumber - 1) * +pageSize;
         const endIndex = startIndex + +pageSize;
