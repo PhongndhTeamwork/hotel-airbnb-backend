@@ -61,7 +61,10 @@ export class Hotel {
     database("hotel")
       .join("users", "users.id", "=", "hotel.hotelier_id")
       .where("hotel.id", "=", hotelId)
-      .select("hotel.*", "users.*")
+      .select("hotel.*", "users.*",{
+        name : "hotel.name",
+        user_name : "users.name",
+      })
       .then((data) => {
         res.status(200).json(data);
       })
